@@ -1,0 +1,86 @@
+[2025-07-31T00:32:37.200+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: process_csv_data_pipeline.process_csv_data scheduled__2025-07-31T00:31:00+00:00 [queued]>
+[2025-07-31T00:32:37.208+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: process_csv_data_pipeline.process_csv_data scheduled__2025-07-31T00:31:00+00:00 [queued]>
+[2025-07-31T00:32:37.209+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 3
+[2025-07-31T00:32:37.219+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): process_csv_data> on 2025-07-31 00:31:00+00:00
+[2025-07-31T00:32:37.224+0000] {standard_task_runner.py:60} INFO - Started process 301 to run task
+[2025-07-31T00:32:37.227+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'process_csv_data_pipeline', 'process_csv_data', 'scheduled__2025-07-31T00:31:00+00:00', '--job-id', '5', '--raw', '--subdir', 'DAGS_FOLDER/process_csv_data_pipeline.py', '--cfg-path', '/tmp/tmp31ounrbc']
+[2025-07-31T00:32:37.229+0000] {standard_task_runner.py:88} INFO - Job 5: Subtask process_csv_data
+[2025-07-31T00:32:37.292+0000] {task_command.py:423} INFO - Running <TaskInstance: process_csv_data_pipeline.process_csv_data scheduled__2025-07-31T00:31:00+00:00 [running]> on host 9b02a3ac5387
+[2025-07-31T00:32:37.574+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='plant-analytics-team' AIRFLOW_CTX_DAG_ID='process_csv_data_pipeline' AIRFLOW_CTX_TASK_ID='process_csv_data' AIRFLOW_CTX_EXECUTION_DATE='2025-07-31T00:31:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-07-31T00:31:00+00:00'
+[2025-07-31T00:32:37.576+0000] {process_csv_data_pipeline.py:159} INFO - 🌊 Starting CSV data processing...
+[2025-07-31T00:32:37.600+0000] {csv_processor.py:199} INFO - 📥 Processing file: egridData.csv
+[2025-07-31T00:32:37.681+0000] {minio_client.py:102} INFO - 📥 Downloaded egridData.csv to /tmp/egridData.csv
+[2025-07-31T00:32:37.681+0000] {csv_processor.py:211} INFO - 🔍 Validating CSV structure using header row...
+[2025-07-31T00:32:37.698+0000] {csv_processor.py:228} INFO - ✅ CSV validation passed, processing data from row 3 onwards...
+[2025-07-31T00:32:37.975+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:37.975+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:38.261+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:38.262+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:38.502+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:38.503+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:38.756+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:38.757+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:39.016+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:39.016+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:39.285+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:39.285+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:39.528+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:39.528+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:39.809+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:39.810+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:40.106+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:40.106+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:40.427+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:40.427+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:40.845+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:40.846+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:41.197+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:41.198+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:41.485+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:41.486+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:41.762+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:41.763+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:42.057+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:32:42.057+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:32:42.165+0000] {db_client.py:68} ERROR - ❌ Error bulk inserting records: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "uk_egrid_data_unique"
+DETAIL:  Key (gen_id, year, state, plant_name)=(1, 2023, NC, Smithfield Packaged Meats Corp.) already exists.
+
+[SQL: 
+                INSERT INTO egrid_data (gen_id, year, state, plant_name, net_generation)
+                VALUES (%(gen_id)s, %(year)s, %(state)s, %(plant_name)s, %(net_generation)s)
+            ]
+[parameters: ({'gen_id': '20032', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 11, LLC', 'net_generation': 3616.0}, {'gen_id': '20003', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 2, LLC', 'net_generation': 3332.0}, {'gen_id': '20011', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 3, LLC', 'net_generation': 4042.0}, {'gen_id': '20009', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 4, LLC', 'net_generation': 3911.0}, {'gen_id': '20007', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 5, LLC', 'net_generation': 1815.0}, {'gen_id': '20028', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 6, LLC', 'net_generation': 1610.0}, {'gen_id': '20038', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 7, LLC', 'net_generation': 2807.0}, {'gen_id': '20052', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 8, LLC', 'net_generation': 3508.0}  ... displaying 10 of 1000 total bound parameter sets ...  {'gen_id': 'GT1', 'year': 2023, 'state': 'NH', 'plant_name': 'White Lake', 'net_generation': 552.0}, {'gen_id': '246', 'year': 2023, 'state': 'NJ', 'plant_name': '10 Finderne Avenue Solar, LLC', 'net_generation': 3508.0})]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-07-31T00:32:42.165+0000] {csv_processor.py:262} ERROR - ❌ Error processing file egridData.csv: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "uk_egrid_data_unique"
+DETAIL:  Key (gen_id, year, state, plant_name)=(1, 2023, NC, Smithfield Packaged Meats Corp.) already exists.
+
+[SQL: 
+                INSERT INTO egrid_data (gen_id, year, state, plant_name, net_generation)
+                VALUES (%(gen_id)s, %(year)s, %(state)s, %(plant_name)s, %(net_generation)s)
+            ]
+[parameters: ({'gen_id': '20032', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 11, LLC', 'net_generation': 3616.0}, {'gen_id': '20003', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 2, LLC', 'net_generation': 3332.0}, {'gen_id': '20011', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 3, LLC', 'net_generation': 4042.0}, {'gen_id': '20009', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 4, LLC', 'net_generation': 3911.0}, {'gen_id': '20007', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 5, LLC', 'net_generation': 1815.0}, {'gen_id': '20028', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 6, LLC', 'net_generation': 1610.0}, {'gen_id': '20038', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 7, LLC', 'net_generation': 2807.0}, {'gen_id': '20052', 'year': 2023, 'state': 'NC', 'plant_name': 'Panda Solar NC 8, LLC', 'net_generation': 3508.0}  ... displaying 10 of 1000 total bound parameter sets ...  {'gen_id': 'GT1', 'year': 2023, 'state': 'NH', 'plant_name': 'White Lake', 'net_generation': 552.0}, {'gen_id': '246', 'year': 2023, 'state': 'NJ', 'plant_name': '10 Finderne Avenue Solar, LLC', 'net_generation': 3508.0})]
+(Background on this error at: https://sqlalche.me/e/14/gkpj)
+[2025-07-31T00:32:42.168+0000] {connection_workflow.py:179} INFO - Pika version 1.3.2 connecting to ('172.18.0.3', 5672)
+[2025-07-31T00:32:42.169+0000] {io_services_utils.py:345} INFO - Socket connected: <socket.socket fd=23, family=2, type=1, proto=6, laddr=('172.18.0.12', 41954), raddr=('172.18.0.3', 5672)>
+[2025-07-31T00:32:42.170+0000] {connection_workflow.py:428} INFO - Streaming transport linked up: (<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50>, _StreamingProtocolShim: <SelectConnection PROTOCOL transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50> params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>).
+[2025-07-31T00:32:42.174+0000] {connection_workflow.py:293} INFO - AMQPConnector - reporting success: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50> params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>
+[2025-07-31T00:32:42.175+0000] {connection_workflow.py:725} INFO - AMQPConnectionWorkflow - reporting success: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50> params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>
+[2025-07-31T00:32:42.176+0000] {blocking_connection.py:453} INFO - Connection workflow succeeded: <SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50> params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>
+[2025-07-31T00:32:42.176+0000] {blocking_connection.py:1264} INFO - Created channel=1
+[2025-07-31T00:32:42.185+0000] {blocking_connection.py:802} INFO - Closing connection (200): Normal shutdown
+[2025-07-31T00:32:42.185+0000] {channel.py:536} INFO - Closing channel (200): 'Normal shutdown' on <Channel number=1 OPEN conn=<SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50> params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>>
+[2025-07-31T00:32:42.186+0000] {channel.py:1133} INFO - Received <Channel.CloseOk> on <Channel number=1 CLOSING conn=<SelectConnection OPEN transport=<pika.adapters.utils.io_services_utils._AsyncPlaintextTransport object at 0x7f6c9b98cb50> params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>>
+[2025-07-31T00:32:42.186+0000] {connection.py:1316} INFO - Closing connection (200): 'Normal shutdown'
+[2025-07-31T00:32:42.187+0000] {io_services_utils.py:731} INFO - Aborting transport connection: state=1; <socket.socket fd=23, family=2, type=1, proto=6, laddr=('172.18.0.12', 41954), raddr=('172.18.0.3', 5672)>
+[2025-07-31T00:32:42.187+0000] {io_services_utils.py:904} INFO - _AsyncTransportBase._initate_abort(): Initiating abrupt asynchronous transport shutdown: state=1; error=None; <socket.socket fd=23, family=2, type=1, proto=6, laddr=('172.18.0.12', 41954), raddr=('172.18.0.3', 5672)>
+[2025-07-31T00:32:42.188+0000] {io_services_utils.py:869} INFO - Deactivating transport: state=1; <socket.socket fd=23, family=2, type=1, proto=6, laddr=('172.18.0.12', 41954), raddr=('172.18.0.3', 5672)>
+[2025-07-31T00:32:42.188+0000] {connection.py:2017} INFO - AMQP stack terminated, failed to connect, or aborted: opened=True, error-arg=None; pending-error=ConnectionClosedByClient: (200) 'Normal shutdown'
+[2025-07-31T00:32:42.188+0000] {connection.py:2086} INFO - Stack terminated due to ConnectionClosedByClient: (200) 'Normal shutdown'
+[2025-07-31T00:32:42.189+0000] {io_services_utils.py:882} INFO - Closing transport socket and unlinking: state=3; <socket.socket fd=23, family=2, type=1, proto=6, laddr=('172.18.0.12', 41954), raddr=('172.18.0.3', 5672)>
+[2025-07-31T00:32:42.189+0000] {blocking_connection.py:525} INFO - User-initiated close: result=(<SelectConnection CLOSED transport=None params=<ConnectionParameters host=rabbitmq port=5672 virtual_host=/ ssl=False>>, ConnectionClosedByClient: (200) 'Normal shutdown')
+[2025-07-31T00:32:42.190+0000] {rabbitmq_client.py:116} INFO - 📧 Sent notification: error
+[2025-07-31T00:32:42.190+0000] {process_csv_data_pipeline.py:192} INFO - 🎉 Processing complete! Total records: 0
+[2025-07-31T00:32:42.191+0000] {python.py:201} INFO - Done. Returned value was: {'total_records': 0}
+[2025-07-31T00:32:42.226+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=process_csv_data_pipeline, task_id=process_csv_data, execution_date=20250731T003100, start_date=20250731T003237, end_date=20250731T003242
+[2025-07-31T00:32:42.264+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-07-31T00:32:42.293+0000] {taskinstance.py:3280} INFO - 1 downstream tasks scheduled from follow-on schedule check

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml -o k8s/
+    kompose.version: 1.36.0 (HEAD)
+  labels:
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api-gateway
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.yml -o k8s/
+        kompose.version: 1.36.0 (HEAD)
+      labels:
+        io.kompose.service: api-gateway
+    spec:
+      containers:
+        - args:
+            - node
+            - dist/index.js
+          env:
+            - name: BACKEND_URL
+              value: http://backend-api:3000
+            - name: CORS_ORIGIN
+              value: '*'
+            - name: NODE_ENV
+              value: development
+            - name: RATE_LIMIT_MAX_REQUESTS
+              value: "100"
+            - name: RATE_LIMIT_WINDOW_MS
+              value: "60000"
+          image: api-gateway
+          name: plant-analytics-gateway
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          imagePullPolicy: Never
+      restartPolicy: Always

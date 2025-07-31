@@ -1,0 +1,74 @@
+[2025-07-31T00:04:06.953+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: process_csv_data_pipeline.process_csv_data scheduled__2025-07-31T00:03:00+00:00 [queued]>
+[2025-07-31T00:04:06.962+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: process_csv_data_pipeline.process_csv_data scheduled__2025-07-31T00:03:00+00:00 [queued]>
+[2025-07-31T00:04:06.963+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 3
+[2025-07-31T00:04:06.974+0000] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): process_csv_data> on 2025-07-31 00:03:00+00:00
+[2025-07-31T00:04:06.978+0000] {standard_task_runner.py:60} INFO - Started process 473 to run task
+[2025-07-31T00:04:06.981+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'process_csv_data_pipeline', 'process_csv_data', 'scheduled__2025-07-31T00:03:00+00:00', '--job-id', '20', '--raw', '--subdir', 'DAGS_FOLDER/process_csv_data_pipeline.py', '--cfg-path', '/tmp/tmpovux2rlx']
+[2025-07-31T00:04:06.983+0000] {standard_task_runner.py:88} INFO - Job 20: Subtask process_csv_data
+[2025-07-31T00:04:07.057+0000] {task_command.py:423} INFO - Running <TaskInstance: process_csv_data_pipeline.process_csv_data scheduled__2025-07-31T00:03:00+00:00 [running]> on host 760c76e3a117
+[2025-07-31T00:04:07.373+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='plant-analytics-team' AIRFLOW_CTX_DAG_ID='process_csv_data_pipeline' AIRFLOW_CTX_TASK_ID='process_csv_data' AIRFLOW_CTX_EXECUTION_DATE='2025-07-31T00:03:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-07-31T00:03:00+00:00'
+[2025-07-31T00:04:07.375+0000] {process_csv_data_pipeline.py:159} INFO - 🌊 Starting CSV data processing...
+[2025-07-31T00:04:07.432+0000] {csv_processor.py:199} INFO - 📥 Processing file: egridData.csv
+[2025-07-31T00:04:07.815+0000] {minio_client.py:102} INFO - 📥 Downloaded egridData.csv to /tmp/egridData.csv
+[2025-07-31T00:04:07.816+0000] {csv_processor.py:211} INFO - 🔍 Validating CSV structure using header row...
+[2025-07-31T00:04:07.825+0000] {csv_processor.py:228} INFO - ✅ CSV validation passed, processing data from row 3 onwards...
+[2025-07-31T00:04:08.202+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:08.202+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:08.507+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:08.507+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:08.771+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:08.771+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:09.043+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:09.044+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:09.315+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:09.316+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:09.608+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:09.608+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:09.883+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:09.883+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:10.143+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:10.143+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:10.420+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:10.421+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:10.726+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:10.727+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:11.104+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:11.104+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:11.551+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:11.552+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:12.109+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:12.110+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:12.454+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:12.454+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:12.722+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:12.722+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:12.968+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:12.968+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:13.240+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:13.241+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:13.526+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:13.526+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:13.798+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:13.799+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:14.083+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:14.083+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:14.396+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:14.397+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:14.705+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:14.705+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:15.011+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:15.012+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:15.263+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:15.263+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:15.534+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:15.534+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:15.790+0000] {db_client.py:63} INFO - 💾 Successfully inserted 1000 records into egrid_data
+[2025-07-31T00:04:15.790+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 1000 records from egridData.csv
+[2025-07-31T00:04:15.954+0000] {db_client.py:63} INFO - 💾 Successfully inserted 601 records into egrid_data
+[2025-07-31T00:04:15.954+0000] {csv_processor.py:256} INFO - ✅ Processed chunk: 601 records from egridData.csv
+[2025-07-31T00:04:15.955+0000] {csv_processor.py:258} INFO - 📊 Completed file egridData.csv: 26601 records
+[2025-07-31T00:04:15.955+0000] {process_csv_data_pipeline.py:192} INFO - 🎉 Processing complete! Total records: 26601
+[2025-07-31T00:04:15.956+0000] {python.py:201} INFO - Done. Returned value was: {'total_records': 26601}
+[2025-07-31T00:04:15.990+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=process_csv_data_pipeline, task_id=process_csv_data, execution_date=20250731T000300, start_date=20250731T000406, end_date=20250731T000415
+[2025-07-31T00:04:16.051+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-07-31T00:04:16.085+0000] {taskinstance.py:3280} INFO - 1 downstream tasks scheduled from follow-on schedule check

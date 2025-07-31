@@ -1,0 +1,7 @@
+Generator file sequence number,Data Year,Plant state abbreviation,Plant name,Generator ID,Generator annual net generation (MWh)
+SEQGEN23,YEAR,PSTATEABB,PNAME,GENID,GENNTAN
+1,2023,AK,Alakanuk Power Plant,UNIT4,9876543210
+2,2023,CA,Los Angeles Grid,GEN2,8765432109
+3,2023,TX,Houston Energy,GEN3,7654321098
+4,2023,NY,New York Power,GEN4,6543210987
+5,2023,FL,Miami Solar,GEN5,5432109876
