@@ -29,7 +29,3 @@ CREATE INDEX idx_egrid_data_net_generation ON egrid_data(net_generation DESC);
 -- Grant permissions to the application user
 GRANT SELECT, INSERT, UPDATE, DELETE ON egrid_data TO plantuser;
 GRANT USAGE, SELECT ON SEQUENCE egrid_data_id_seq TO plantuser;
-
--- Manual DAG trigger command (sleep 5 seconds then trigger)
--- Run this after container startup:
--- sleep 5 && docker exec -it plant-analytics-airflow-webserver-1 airflow dags trigger process_csv_data_pipeline

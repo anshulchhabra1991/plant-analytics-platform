@@ -26,7 +26,7 @@ A scalable data analytics platform for EPA eGRID (Emissions & Generation Resourc
 ### **Prerequisites**
 - Node.js 18+
 - Docker and Docker Compose
-- 4GB+ RAM, 10GB+ storage
+- 3GB+ RAM, 5GB+ storage
 
 ### **Quick Start**
    ```bash
@@ -55,7 +55,7 @@ Login at Frontend " http://localhost:4000 , user - admin@plantanalytics.com , pa
 | Swagger Docs | http://localhost:3000/api/docs | - |
 | Airflow | http://localhost:8080 | admin / admin |
 | RabbitMQ | http://localhost:15672 | guest / guest |
-| MinIO Console | http://localhost:9001 | minioadmin / minioadmin |
+| MinIO Console | http://localhost:9001 | egriduser / egridpass123 |
 | Prometheus | http://localhost:9090 | - |
 
 
