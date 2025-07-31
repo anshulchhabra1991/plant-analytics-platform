@@ -1,0 +1,316 @@
+networks:
+  plant-analytics:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  rabbitmq_data:
+
+services:
+  backend-api:
+    build:
+      context: apps/backend-api
+      dockerfile: Dockerfile
+    container_name: plant-analytics-backend-api
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - REDIS_HOST=redis
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - plant-analytics
+    # volumes:
+      # - ../apps/backend-api:/app
+      # - /app/node_modules
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: apps/api-gateway
+      dockerfile: Dockerfile
+    container_name: plant-analytics-gateway
+    ports:
+      - "${GATEWAY_PORT:-8000}:8000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - BACKEND_URL=http://backend-api:${BACKEND_PORT:-3000}
+      - AUTH_SERVICE_URL=http://auth-service:5000
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-300000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-1000}
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+    depends_on:
+      backend-api:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+    networks:
+      - plant-analytics
+    # volumes:
+      # - ../apps/api-gateway:/app
+      # - /app/node_modules
+    command: ["node", "dist/main.js"]
+    restart: unless-stopped
+
+  auth-service:
+    build:
+      context: apps/auth-service
+      dockerfile: Dockerfile
+    container_name: plant-analytics-auth-service
+    ports:
+      - "${AUTH_SERVICE_PORT:-5001}:5000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT:-5001}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - JWT_SECRET=${JWT_SECRET:-change-me-in-production}
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - plant-analytics
+    # volumes:
+      # - ../apps/auth-service:/app
+      # - /app/node_modules
+    command: ["node", "dist/main.js"]
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: apps/frontend
+      dockerfile: Dockerfile
+    container_name: plant-analytics-frontend
+    ports:
+      - "${FRONTEND_PORT:-4000}:4000"
+    environment:
+      - API_GATEWAY_URL=http://api-gateway:${GATEWAY_PORT:-8000}
+    depends_on:
+      - api-gateway
+    networks:
+      - plant-analytics
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    container_name: plant-analytics-postgres
+    ports:
+      - "${POSTGRES_EXTERNAL_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/db/init:/docker-entrypoint-initdb.d
+    networks:
+      - plant-analytics
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:${REDIS_VERSION:-7}-alpine
+    container_name: plant-analytics-redis
+    ports:
+      - "${REDIS_EXTERNAL_PORT:-6379}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - plant-analytics
+    command: >
+      sh -c "
+        if [ -n \"${REDIS_PASSWORD}\" ]; then
+          redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+        else
+          redis-server --appendonly yes
+        fi
+      "
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION:-3}-alpine
+    container_name: plant-analytics-rabbitmq
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-/}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ../infra/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    networks:
+      - plant-analytics
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    restart: unless-stopped
+
+  minio:
+    image: minio/minio:${MINIO_VERSION:-latest}
+    container_name: plant-analytics-minio
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_BROWSER_REDIRECT_URL: http://localhost:${MINIO_CONSOLE_PORT:-9001}
+    volumes:
+      - minio_data:/data
+    networks:
+      - plant-analytics
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: unless-stopped
+
+  airflow-webserver:
+    image: docker-airflow-webserver
+    build:
+      context: apps/data-processing
+      dockerfile: Dockerfile
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@example.com &&
+        exec airflow webserver
+      "
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./apps/data-processing/:/opt/airflow/
+      - ./apps/data-processing/logs:/opt/airflow/logs
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://plantuser:plantpassword123@postgres:5432/plant_analytics
+      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
+      - AIRFLOW__CORE__SECRET_KEY=${AIRFLOW_SECRET_KEY}
+      - AIRFLOW__CELERY__BROKER_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_BUCKET=egrid-data
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+    networks:
+      - plant-analytics
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  airflow-scheduler:
+    image: docker-airflow-scheduler
+    build:
+      context: apps/data-processing
+      dockerfile: Dockerfile
+    command: >
+      bash -c "
+        exec airflow scheduler
+      "
+    volumes:
+      - ./apps/data-processing/logs:/opt/airflow/logs
+      - ./apps/data-processing/:/opt/airflow/
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://plantuser:plantpassword123@postgres:5432/plant_analytics
+      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_FERNET_KEY}
+      - AIRFLOW__CORE__SECRET_KEY=${AIRFLOW_SECRET_KEY}
+      - AIRFLOW__CELERY__BROKER_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - AIRFLOW__CELERY__RESULT_BACKEND=redis://:${REDIS_PASSWORD}@redis:6379/0
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+      - MINIO_BUCKET=egrid-data
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+    networks:
+      - plant-analytics
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      airflow-webserver:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "airflow", "info"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s 
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: aiq-analytics-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - plant-analytics
+    restart: unless-stopped

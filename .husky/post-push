@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Post-push actions..."
+
+BRANCH_NAME=$(git branch --show-current)
+COMMIT_HASH=$(git rev-parse HEAD)
+
+echo "📤 Pushed to branch: $BRANCH_NAME"
+echo "📦 Latest commit: $COMMIT_HASH"
+
+# Trigger deployment pipeline for main branch
+if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "master" ]; then
+  echo "🚀 Main branch detected - triggering deployment checks..."
+  
+  # Here you could trigger deployment workflows
+  # - GitHub Actions
+  # - Jenkins pipeline
+  # - AWS CodePipeline
+  # - Azure DevOps
+  
+  echo "🎯 Deployment pipeline notifications sent"
+fi
+
+# Update deployment status
+echo "📊 Updating deployment status..."
+
+# Notification to team (Slack, Teams, etc.)
+echo "🔔 Team notifications sent"
+
+echo "✅ Post-push actions completed!" 

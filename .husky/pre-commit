@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-commit checks..."
+
+# Lint and format code
+echo "🔍 Running ESLint..."
+npm run lint --if-present
+
+# Check TypeScript compilation
+echo "🔧 Checking TypeScript compilation..."
+npm run build --if-present
+
+# Run unit tests
+echo "🧪 Running unit tests..."
+npm run test --if-present
+
+# Check for security vulnerabilities
+echo "🔒 Checking for security vulnerabilities..."
+npm audit --audit-level moderate
+
+# Verify environment files
+echo "📋 Verifying environment configuration..."
+if [ ! -f ".env" ]; then
+  echo "⚠️  Warning: .env file not found"
+fi
+
+if [ ! -f "config/env.example" ]; then
+  echo "⚠️  Warning: config/env.example file not found"
+fi
+
+# Check Docker configuration
+echo "🐳 Validating Docker configuration..."
+docker compose -f infrastructure/docker/docker-compose.yml config > /dev/null
+
+echo "✅ Pre-commit checks completed!"

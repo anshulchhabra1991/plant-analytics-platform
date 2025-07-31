@@ -1,0 +1,13 @@
+{
+  "name": "@plant-analytics/data-processing",
+  "version": "1.0.0",
+  "description": "Data processing application for plant analytics ETL pipeline",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests yet\"",
+    "lint": "echo \"Python linting handled by requirements.txt and separate tooling\""
+  },
+  "keywords": ["etl", "data-processing", "plant-analytics", "airflow"],
+  "author": "Plant Analytics Team",
+  "license": "MIT"
+} 

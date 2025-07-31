@@ -1,0 +1,19 @@
+{{- if .Values.services.frontend.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "plant-analytics-platform.frontend.fullname" . }}
+  labels:
+    {{- include "plant-analytics-platform.labels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+spec:
+  type: {{ .Values.services.frontend.service.type }}
+  ports:
+    - port: {{ .Values.services.frontend.service.port }}
+      targetPort: {{ .Values.services.frontend.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "plant-analytics-platform.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: frontend
+{{- end }}

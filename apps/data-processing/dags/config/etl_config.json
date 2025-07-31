@@ -1,0 +1,49 @@
+[
+  {
+    "name": "egrid_data",
+    "schedule_interval": "0 */1 * * *",
+    "input": {
+      "file_path": "minio-bucket/EgridData.csv",
+      "file_source": "s3",
+      "file_type": "csv",
+      "skip_rows": 1,
+      "validation_row": 2,
+      "data_start_row": 3,
+      "chunk_size": 1000,
+      "schema": {
+        "Generator file sequence number": "string",
+        "Data Year": "int",
+        "Plant state abbreviation": "string", 
+        "Plant name": "string",
+        "Generator ID": "string",
+        "Generator annual net generation (MWh)": "string"
+      }
+    },
+    "output": {
+      "type": "postgres",
+      "table_name": "egrid_data",
+      "schema": {
+        "gen_id": "string",
+        "year": "int",
+        "state": "string",
+        "plant_name": "string", 
+        "net_generation": "float"
+      },
+      "mapping": {
+        "Generator ID": "gen_id",
+        "Data Year": "year",
+        "Plant state abbreviation": "state",
+        "Plant name": "plant_name",
+        "Generator annual net generation (MWh)": "net_generation"
+      }
+    },
+    "processing": {
+      "enable_data_validation": true,
+      "skip_if_processed": true,
+      "min_records_threshold": 1,
+      "handle_large_numbers": true,
+      "remove_commas_from_numbers": true,
+      "unique_constraint": ["year", "gen_id", "plant_name", "state"]
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{{- if .Values.services.apiGateway.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "plant-analytics-platform.api-gateway.fullname" . }}
+  labels:
+    {{- include "plant-analytics-platform.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api-gateway
+spec:
+  type: {{ .Values.services.apiGateway.service.type }}
+  ports:
+    - port: {{ .Values.services.apiGateway.service.port }}
+      targetPort: {{ .Values.services.apiGateway.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "plant-analytics-platform.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: api-gateway
+{{- end }}

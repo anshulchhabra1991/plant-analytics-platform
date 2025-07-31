@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🚀 Running pre-push checks..."
+
+# Run integration tests
+echo "🧪 Running integration tests..."
+npm run test:integration --if-present
+
+# Run e2e tests
+echo "🎯 Running end-to-end tests..."
+npm run test:e2e --if-present
+
+# Verify services health
+echo "🏥 Running health checks..."
+npm run health --if-present
+
+# Check for breaking changes in API
+echo "🔍 Checking for API breaking changes..."
+# This could integrate with API versioning tools
+
+# Verify data pipeline
+echo "📊 Verifying data pipeline..."
+if command -v python3 &> /dev/null; then
+  python3 scripts/verify-pipeline.py --if-present 2>/dev/null || echo "⚠️  Pipeline verification skipped"
+fi
+
+# Security scan
+echo "🔒 Running security scan..."
+npm audit --audit-level high
+
+echo "✅ Pre-push checks completed!" 

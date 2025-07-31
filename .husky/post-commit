@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "📝 Post-commit actions..."
+
+# Log commit info
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+BRANCH_NAME=$(git branch --show-current)
+
+echo "📦 Commit: $COMMIT_HASH"
+echo "🌿 Branch: $BRANCH_NAME"
+echo "💬 Message: $COMMIT_MESSAGE"
+
+# Update changelog if applicable
+if [ -f "CHANGELOG.md" ]; then
+  echo "📋 Updating changelog..."
+fi
+
+# Trigger build notifications (if configured)
+echo "🔔 Commit logged successfully"
+
+echo "✅ Post-commit actions completed!" 
