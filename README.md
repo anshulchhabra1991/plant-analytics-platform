@@ -1,6 +1,6 @@
 # 🏭 Plant Analytics Platform
 
-A production-ready, scalable data analytics platform for EPA eGRID (Emissions & Generation Resource Integrated Database) power plant data. Built with microservices architecture, automated data processing, and comprehensive monitoring.
+A scalable data analytics platform for EPA eGRID (Emissions & Generation Resource Integrated Database) power plant data. Built with microservices architecture, automated data processing, and comprehensive monitoring.
 
 > **⚡ One-Command Setup**: Get the entire system running with just `make up` - no complex configuration needed!
 
